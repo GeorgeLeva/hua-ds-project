@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+<body>
+<!-- Include the header fragment -->
+<div th:insert="fragments/menu :: menu"></div>
+<main>
+  <!-- Content specific to this page -->
+  <!-- Include the legalrepresentatives fragment -->
+  <div class="container" >
+    <div th:replace="fragments/users :: users"></div>
+  </div>
+</main>
+
+<!-- Include the footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

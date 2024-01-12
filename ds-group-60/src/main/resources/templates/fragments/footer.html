@@ -1,0 +1,11 @@
+<footer>
+  <div class="container">
+    <div sec:authorize="isAuthenticated()">
+      Authenticated user roles:
+      <span sec:authentication="principal.authorities"></span>
+    </div>
+    <hr/>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<body>
+<!-- Include the header fragment -->
+<div th:insert="fragments/menu :: menu"></div>
+<main>
+  <!-- Content specific to this page -->
+  <!-- Include the legalrepresentatives fragment -->
+  <div class="container" >
+    <h3>User Registration</h3>
+    <form th:action="@{/saveUser}" method="post" th:object="${user}">
+      <div class="form-group row">
+        <label for="username" class="col-sm-2 col-form-label"> User Name</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" th:field="*{username}" id="username"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="firstname" class="col-sm-2 col-form-label"> First Name</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" th:field="*{firstname}" id="firstname"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="lastname" class="col-sm-2 col-form-label"> Last Name</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" th:field="*{lastname}" id="lastname"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label"> Email</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control"  th:field="*{email}" id="email"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="col-sm-2 col-form-label"> Password </label>
+        <div class="col-sm-4">
+          <input type="password" class="form-control"  id="password" th:field="*{password}"/>
+        </div>
+      </div>
+      <div><input type="submit" class="btn btn-primary" value="Sign Up"/></div>
+    </form>
+    <div th:text="${msg}"></div>
+  </div>
+</main>
+
+<!-- Include the footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

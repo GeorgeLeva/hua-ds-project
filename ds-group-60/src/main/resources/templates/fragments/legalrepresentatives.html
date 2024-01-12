@@ -1,0 +1,52 @@
+<legalrepresentatives>
+    <div th:if="${ not#lists.isEmpty(legalrepresentatives)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Company</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="legalrepresentative : ${legalrepresentatives}">
+                <td th:text="${legalrepresentative.firstName}"></td>
+                <td th:text="${legalrepresentative.lastName}"></td>
+                <td th:text="${legalrepresentative.email}"></td>
+                <td th:text="${legalrepresentative.company}"></td>
+                <td th:if="${legalrepresentative.id}"><a class="btn btn-info" th:href="@{/legalrepresentative/{id}(id=${legalrepresentative.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${legalrepresentative.id}"
+                            name="deleteLegalRepresentative"><i class="remove user icon"></i>
+                        Delete</button>
+                    <a class="btn btn-primary" th:href="@{/application/legalrepresentative/{id}(id=${legalrepresentative.id})}">My Applications</a>
+                    <a class="btn btn-primary" th:href="@{/application/legalrepresentative/new/{id}(id=${legalrepresentative.id})}">Add Application</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${ #lists.isEmpty(legalrepresentatives)}">
+        No Legal Representatives found!
+    </div>
+    <a href="/legalrepresentative/new" class="btn btn-primary" role="button">Create new Legal Representative</a>
+    <script type="text/javascript">
+        $("[name='deleteLegalRepresentative']").click(function() {
+            var urlCall = "/legalrepresentative/";
+            $.ajax({
+                url : urlCall + $(this).attr('id'),
+                type : 'DELETE',
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href", value="/legalrepresentative");
+                },
+                error : function(result) {
+                    console.log(result);
+                },
+            });
+        });
+    </script>
+
+</legalrepresentatives>
