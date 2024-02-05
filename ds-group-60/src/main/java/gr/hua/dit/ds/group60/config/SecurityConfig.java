@@ -30,9 +30,9 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers(HttpMethod.DELETE, "/legal_representatives/**").permitAll()
-                                .antMatchers("/", "/register", "/saveUser").permitAll()
-                                .antMatchers("/application/**").hasRole("USER")
+                                .requestMatchers(HttpMethod.DELETE, "/legal_representatives/**").permitAll()
+                                .requestMatchers("/", "/register", "/saveUser").permitAll()
+                                .requestMatchers("/application/**").hasRole("USER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
