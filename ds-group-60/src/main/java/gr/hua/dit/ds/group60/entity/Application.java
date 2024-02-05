@@ -26,10 +26,10 @@ public class Application {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name="application_legalrepresentative",
+            name="application_legal_representative",
             joinColumns = @JoinColumn(name="application_id"),
-            inverseJoinColumns = @JoinColumn(name="legalrepresentative_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames={"legalrepresentative_id", "application_id"})}
+            inverseJoinColumns = @JoinColumn(name="legal_presentative_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames={"legal_representative_id", "application_id"})}
     )
     private List<LegalRepresentative> legalRepresentatives;
 

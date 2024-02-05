@@ -1,41 +1,47 @@
 <applications>
 
-  <div th:if="${ not#lists.isEmpty(applications)}">
+  <div th:if="${not #lists.isEmpty(applications)}">
     <table class="table">
       <thead>
       <tr>
-        <th>Title</th>
-        <th>Actions</th>
+        <th>Company Name</th>
+        <th>Purpose</th>
+        <th>Operating Statute</th>
+        <th>HQ Location</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="application : ${applications}">
-        <td th:text="${application.company}"></td>
-        <td th:if="${application.id}"><a class="btn btn-info" th:href="@{/application/{applications_id}(applications_id=${application.id})}">Edit</a>
-            <button type="button" class="btn btn-danger" th:id="${applications.id}"
-                  name="deleteApplication"><i class="remove user icon"></i>
-            Delete</button>
+      <tr th:each="app : ${applications}">
+        <td th:text="${app.company}"></td>
+        <td th:text="${app.purpose}"></td>
+        <td th:text="${app.operatingStatute}"></td>
+        <td th:text="${app.HQ}"></td>
+        <td th:if="${app.id}">
+          <a class="btn btn-info" th:href="@{/applications/{id}(id=${app.id})}">Edit</a>
+          <button type="button" class="btn btn-danger" th:id="${app.id}" name="deleteApplication">
+            <i class="remove user icon"></i>Delete
+          </button>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <div th:if="${ #lists.isEmpty(applications)}">
+  <div th:if="${#lists.isEmpty(applications)}">
     No Applications found!
   </div>
-  <a href="/application/new" class="btn btn-primary" role="button">Create new Application</a>
+  <a href="/applications/new" class="btn btn-primary" role="button">Create new Application</a>
   <script type="text/javascript">
-    $("[name='deleteApplication']").click(function() {
-      var urlCall = "/application/";
+    $("[name='deleteApplication']").click(function () {
+      var urlCall = "/applications/";
       $.ajax({
-        url : urlCall + $(this).attr('id'),
-        type : 'DELETE',
-        success : function(result) {
+        url: urlCall + $(this).attr('id'),
+        type: 'DELETE',
+        success: function (result) {
           console.log(result);
-          $(location).attr("href", value="/application");
+          $(location).attr("href", value="/applications");
         },
-        error : function(result) {
-          console.log(result);S
+        error: function (result) {
+          console.log(result);
         },
       });
     });

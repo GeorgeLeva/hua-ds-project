@@ -28,14 +28,15 @@ public class LegalRepresentativeDAOImpl implements LegalRepresentativeDAO {
     }
 
     @Override
-    public LegalRepresentative getLegalRepresentative(Integer legalrepresentative_id) {
-        return entityManager.find(LegalRepresentative.class, legalrepresentative_id);
+    public LegalRepresentative getLegalRepresentative(Integer legal_representative_id) {
+        return entityManager.find(LegalRepresentative.class, legal_representative_id);
     }
 
     @Override
     @Transactional
     public void saveLegalRepresentative(LegalRepresentative legalrepresentative) {
-        System.out.println("legalrepresentative"+ legalrepresentative.getLegalRepresentativeId());
+        System.out.println("Saving legal representative: " + legalrepresentative);
+        System.out.println("legal_representative"+ legalrepresentative.getLegalRepresentativeId());
         if (legalrepresentative.getLegalRepresentativeId() == null) {
             entityManager.persist(legalrepresentative);
         } else {
@@ -45,15 +46,15 @@ public class LegalRepresentativeDAOImpl implements LegalRepresentativeDAO {
 
     @Override
     @Transactional
-    public void deleteLegalRepresentative(Integer legalrepresentative_id) {
-        System.out.println("Deleting legal representative with id: " + legalrepresentative_id);
-        entityManager.remove(entityManager.find(LegalRepresentative.class, legalrepresentative_id));
+    public void deleteLegalRepresentative(Integer legal_representative_id) {
+        System.out.println("Deleting legal representative with id: " + legal_representative_id);
+        entityManager.remove(entityManager.find(LegalRepresentative.class, legal_representative_id));
     }
 
     @Override
     @Transactional
-    public List<Application> getApplications(Integer legalrepresentative_id) {
-        LegalRepresentative legalrepresentative = entityManager.find(LegalRepresentative.class, legalrepresentative_id);
+    public List<Application> getApplications(Integer legal_representative_id) {
+        LegalRepresentative legalrepresentative = entityManager.find(LegalRepresentative.class, legal_representative_id);
         return legalrepresentative.getApplications();
     }
 }

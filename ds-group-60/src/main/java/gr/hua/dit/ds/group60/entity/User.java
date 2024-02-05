@@ -19,24 +19,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(max = 50)
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(max = 20)
     private String firstname;
 
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(max = 20)
     private String lastname;
 
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(max = 50)
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "must not be blank")
     @Size(max = 120)
     private String password;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class ApplicationController {
         return "applications";
     }
 
-    @Secured("ROLE_LEGAL_REPRESENTATIVE")
+//    @Secured("ROLE_LEGAL_REPRESENTATIVE")
     @GetMapping("/new")
     public String addApplication(Model model){
         Application application = new Application();
@@ -30,20 +30,20 @@ public class ApplicationController {
         return "add_application";
     }
 
-    @GetMapping("{application_id}")
+    @GetMapping("/{application_id}")
     public String editApplication(@PathVariable Integer application_id, Model model){
         Application application = applicationService.getApplication(application_id);
         model.addAttribute("application", application);
         return "add_application";
     }
 
-    @GetMapping("/legalrepresentative/{legalrepresentative_id}")
-    public String getLegalRepresentativeApplications(@PathVariable Integer legalrepresentative_id, Model model){
-        model.addAttribute("applications", applicationService.getLegalRepsesentativeApplications(legalrepresentative_id));
+    @GetMapping("/legal_representatives/{legal_representative_id}")
+    public String getLegalRepresentativeApplications(@PathVariable Integer legal_representative_id, Model model){
+        model.addAttribute("applications", applicationService.getLegalRepsesentativeApplications(legal_representative_id));
         return "applications";
     }
 
-    @Secured("ROLE_LEGAL_REPRESENTATIVE")
+//    @Secured("ROLE_LEGAL_REPRESENTATIVE")
     @PostMapping("/new")
     public String saveApplications(Application application, Model model){
         applicationService.saveApplication(application);
@@ -52,7 +52,7 @@ public class ApplicationController {
     }
 
 
-    @DeleteMapping("{application_id}")
+    @DeleteMapping("/{application_id}")
     public String deleteApplication(@PathVariable Integer application_id){
         applicationService.deleteApplication(application_id);
         return "applications";

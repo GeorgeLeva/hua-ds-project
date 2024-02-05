@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="fragments/header :: header"></head>
+
+<body>
+<!-- Include the header fragment -->
+<div th:insert="fragments/menu :: menu"></div>
+<main>
+  <div class="container" >
+    <h4 th:inline="text">
+      Legal Representatives for Applications [[${application.company}]]
+    </h4>
+    <div th:if="${ not#lists.isEmpty(legal_representatives)}">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Surname</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="legal_representative : ${legal_representatives}">
+          <td th:text="${legal_representative.firstname}"></td>
+          <td th:text="${legal_representative.lastname}"></td>
+          <td th:text="${legal_representative.email}"></td>
+          <td th:if="${legal_representative.id}">
+            <button type="button" class="btn btn-info" th:legal_representative_id="${legal_representative.id}" th:application_id="${application.id}"
+                    name="enrollLegalRepresentative"><i class="remove user icon"></i>
+              Enroll</button>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- Include the footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript">
+  $("[name='enrollLegalRepresentative']").click(function() {
+    var urlCall = "/applications/legal_representatives/";
+    var ur1= urlCall + $(this).attr('application_id') + "/" + $(this).attr('legal_representative_id');
+    console.log(ur1);
+    console.log($(this).attr('application_id'));
+    console.log($(this).attr('legal_representative_id'));
+    $.ajax({
+      url : urlCall + $(this).attr('application_id') + "/" + $(this).attr('legal_representative_id'),
+      type : 'POST',
+      success : function(result) {
+        console.log(result);
+        window.location.reload();
+      },
+      error : function(result) {
+        console.log(result);
+      },
+    });
+  });
+</script>
+</body>
+</html>

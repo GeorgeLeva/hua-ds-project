@@ -9,10 +9,10 @@ public class LegalRepresentative{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "legalRepresentative_id")
+    @Column(name = "legal_representative_id")
     private Integer Id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -20,15 +20,15 @@ public class LegalRepresentative{
     private String company;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="legalRepresentative_profile_id")
+    @JoinColumn(name="legal_representative_profile_id")
     private LegalRepresentativeProfile legalRepresentativeProfile;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name="application_legalrepresentative",
-            joinColumns = @JoinColumn(name="legalrepresentative_id"),
+            name="application_legal_representative",
+            joinColumns = @JoinColumn(name="legal_representative_id"),
             inverseJoinColumns = @JoinColumn(name="application_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames={"legalrepresentative_id", "application_id"})}
+            uniqueConstraints = {@UniqueConstraint(columnNames={"legal_representative_id", "application_id"})}
     )
     private List<Application> applications;
 

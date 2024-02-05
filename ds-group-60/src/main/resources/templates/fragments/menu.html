@@ -12,12 +12,12 @@
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li  class="nav-item">
-            <a class="nav-link" href="/legalrepresentative">Legal Representatives</a>
+            <a class="nav-link" href="/legal_representatives">Legal Representatives</a>
           </li>
           <li  class="nav-item">
-            <a class="nav-link" href="/application">Applications</a>
+            <a class="nav-link" href="/applications">Applications</a>
           </li>
-          <li  class="nav-item">
+          <li sec:authorize="hasRole('ADMIN')" class="nav-item">
             <a class="nav-link" href="/users">Users</a>
           </li>
           <li sec:authorize="isAuthenticated()"  class="nav-item">
