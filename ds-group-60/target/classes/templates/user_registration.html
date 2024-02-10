@@ -8,7 +8,6 @@
 <div th:insert="fragments/menu :: menu"></div>
 <main>
   <!-- Content specific to this page -->
-  <!-- Include the legalrepresentatives fragment -->
   <div class="container" >
     <h3>User Registration</h3>
     <form th:action="@{/saveUser}" method="post" th:object="${user}">

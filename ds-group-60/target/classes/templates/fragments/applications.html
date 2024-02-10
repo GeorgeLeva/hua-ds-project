@@ -11,12 +11,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="app : ${applications}">
-        <td th:text="${app.company}"></td>
-        <td th:text="${app.purpose}"></td>
-        <td th:text="${app.operatingStatute}"></td>
-        <td th:text="${app.HQ}"></td>
-        <td th:if="${app.id}">
+      <tr th:each="comp : ${company}">
+        <td th:text="${comp.name}"></td>
+        <td th:text="${comp.purpose}"></td>
+        <td th:text="${comp.operatingStatute}"></td>
+        <td th:text="${comp.HQ}"></td>
+        <td th:if="${comp.id}">
           <a class="btn btn-info" th:href="@{/applications/{id}(id=${app.id})}">Edit</a>
           <button type="button" class="btn btn-danger" th:id="${app.id}" name="deleteApplication">
             <i class="remove user icon"></i>Delete

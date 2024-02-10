@@ -13,22 +13,15 @@
       <div class="form-group">
         <input type="hidden" id="id" class="form-control" th:field="*{id}">
       </div>
+
+      <!-- Dropdown menu for selecting the company -->
       <div class="form-group">
-        <input type="hidden" id="username" class="form-control" th:field="*{legal_representative.user.username}">
+        <label for="company">Select Company</label>
+        <select id="company" class="form-control" th:field="*{legalRepresentative.company}">
+          <option th:each="company : ${legalRepresentative.companies}" th:value="${company}" th:text="${company}"></option>
+        </select>
       </div>
-      <div class="form-group">
-        <input type="hidden" id="firstname" class="form-control" th:field="*{legal_representative.user.firstname}">
-      </div>
-      <div class="form-group">
-        <input type="hidden" id="lastname" class="form-control" th:field="*{legal_representative.user.lastname}">
-      </div>
-      <div class="form-group">
-        <input type="hidden" id="email" class="form-control" th:field="*{legal_representative.user.email}">
-      </div>
-      <div class="form-group">
-        <label for="company">Company Name</label>
-        <input type="text" id="company" class="form-control" th:field="*{company}">
-      </div>
+
       <div class="form-group">
         <label for="purpose">Purpose</label>
         <input type="text" id="purpose" class="form-control" th:field="*{purpose}">
@@ -41,6 +34,9 @@
         <label for="HQ">HQ Location</label>
         <input type="text" id="HQ" class="form-control" th:field="*{HQ}">
       </div>
+
+      <!-- Hidden fields for legal representative details -->
+      <input type="hidden" id="legal_representative_id" th:field="*{legalRepresentative.legalRepresentativeId}">
       <button type="submit" class="btn btn-primary">Submit</button>
       <div th:if="${#fields.hasErrors('*')}">
         <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Error</p>

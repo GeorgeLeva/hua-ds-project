@@ -7,98 +7,60 @@ import java.util.List;
 
 @Entity
 public class Application {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column (name = "application_id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "application_id")
+    private Integer id;
 
-    @Column
-    private String company;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "legal_representative_id")
+    private LegalRepresentative legalRepresentative;
 
-    @Column
-    private String purpose;
-
-    @Column
-    private String operatingStatute;
-
-    @Column
-    private String HQ;
-
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name="application_legal_representative",
-            joinColumns = @JoinColumn(name="application_id"),
-            inverseJoinColumns = @JoinColumn(name="legal_presentative_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames={"legal_representative_id", "application_id"})}
-    )
-    private List<LegalRepresentative> legalRepresentatives;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Application() {
     }
 
-    public Application(String company, String purpose, String operatingStatute, String HQ) {
+    public Application(Integer id, LegalRepresentative legalRepresentative, Company company) {
+        this.id = id;
+        this.legalRepresentative = legalRepresentative;
         this.company = company;
-        this.purpose = purpose;
-        this.operatingStatute = operatingStatute;
-        this.HQ = HQ;
     }
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getCompany() {
+    public LegalRepresentative getLegalRepresentative() {
+        return legalRepresentative;
+    }
+
+    public void setLegalRepresentative(LegalRepresentative legalRepresentative) {
+        this.legalRepresentative = legalRepresentative;
+    }
+
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(String company) {
+    public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public String getOperatingStatute() {
-        return operatingStatute;
-    }
-
-    public void setOperatingStatute(String operatingStatute) {
-        this.operatingStatute = operatingStatute;
-    }
-
-    public String getHQ() {
-        return HQ;
-    }
-
-    public void setHQ(String HQ) {
-        this.HQ = HQ;
-    }
-
-    public List<LegalRepresentative> getLegalRepresentatives() {
-        return legalRepresentatives;
-    }
-
-    public void setLegalRepresentatives(List<LegalRepresentative> legalRepresentatives) {
-        this.legalRepresentatives = legalRepresentatives;
     }
 
     @Override
     public String toString() {
         return "Application{" +
                 "id=" + id +
-                ", company='" + company + '\'' +
-                ", purpose='" + purpose + '\'' +
-                ", operatingStatute='" + operatingStatute + '\'' +
-                ", HQ='" + HQ + '\'' +
+                ", legalRepresentative=" + legalRepresentative +
+                ", company=" + company +
                 '}';
     }
 }

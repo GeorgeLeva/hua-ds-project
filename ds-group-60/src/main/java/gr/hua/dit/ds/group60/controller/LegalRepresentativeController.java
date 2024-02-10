@@ -1,9 +1,12 @@
 package gr.hua.dit.ds.group60.controller;
 
+import gr.hua.dit.ds.group60.dao.CompanyDAO;
 import gr.hua.dit.ds.group60.dao.LegalRepresentativeDAO;
 import gr.hua.dit.ds.group60.dao.UserDAO;
+import gr.hua.dit.ds.group60.entity.Company;
 import gr.hua.dit.ds.group60.entity.LegalRepresentative;
 import gr.hua.dit.ds.group60.entity.User;
+import jakarta.persistence.NoResultException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
@@ -26,6 +29,8 @@ public class LegalRepresentativeController {
 
     @Autowired
     private LegalRepresentativeDAO legalrepresentativeDao;
+    @Autowired
+    private CompanyDAO companyDAO;
 
     @Autowired
     private UserDAO userDao;
@@ -56,7 +61,8 @@ public class LegalRepresentativeController {
     }
 
     @PostMapping("/new")
-    public String saveLegalRepresentative(@Valid @ModelAttribute("legal_representative") LegalRepresentative legalrepresentative, BindingResult result, Model model, Principal principal) {
+    public String saveLegalRepresentative(@Valid @ModelAttribute("legal_representative") LegalRepresentative legalRepresentative,
+                                          BindingResult result, Model model, Principal principal) {
         if (result.hasErrors()) {
             // Handle validation errors (e.g., return to the form with error messages)
             return "add_legal_representative";
@@ -70,13 +76,36 @@ public class LegalRepresentativeController {
             return "add_legal_representative";
         }
 
-        legalrepresentative.setUser(currentUser);
+        legalRepresentative.setUser(currentUser);
 
-        // Proceed with saving the LegalRepresentative
-        legalrepresentativeDao.saveLegalRepresentative(legalrepresentative);
+        // Check if the company already exists
+        Company company;
+        try {
+            company = companyDAO.getCompanyByName(legalRepresentative.getCompanyName());
+        } catch (jakarta.persistence.NoResultException | org.springframework.dao.EmptyResultDataAccessException e) {
+            // If no company is found, create a new one
+            company = new Company();
+            company.setName(legalRepresentative.getCompanyName());
+            // Save the company
+            companyDAO.saveCompany(company);
+        }
+
+        // Save or merge the legal representative
+        legalrepresentativeDao.saveLegalRepresentative(legalRepresentative);
+
+        // Fetch the managed legal representative
+        legalRepresentative = legalrepresentativeDao.getLegalRepresentativeById(legalRepresentative.getId());
+
+        // Set the legal representative for the company
+        company.setLegalRepresentative(legalRepresentative);
+
+        // Add the company to the set of companies for the legal representative
+        legalRepresentative.getCompanies().add(company);
+
         model.addAttribute("legal_representatives", legalrepresentativeDao.getLegalRepresentatives());
         return "legal_representatives";
     }
+
 
 
     private boolean isValidUser(User user) {
