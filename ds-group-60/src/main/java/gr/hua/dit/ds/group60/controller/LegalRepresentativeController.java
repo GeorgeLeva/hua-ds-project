@@ -6,7 +6,9 @@ import gr.hua.dit.ds.group60.dao.UserDAO;
 import gr.hua.dit.ds.group60.entity.Company;
 import gr.hua.dit.ds.group60.entity.LegalRepresentative;
 import gr.hua.dit.ds.group60.entity.User;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
@@ -27,6 +29,8 @@ import java.util.Set;
 @RequestMapping("/legal_representatives")
 public class LegalRepresentativeController {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     private LegalRepresentativeDAO legalrepresentativeDao;
     @Autowired
@@ -96,15 +100,22 @@ public class LegalRepresentativeController {
         // Fetch the managed legal representative
         legalRepresentative = legalrepresentativeDao.getLegalRepresentativeById(legalRepresentative.getId());
 
-        // Set the legal representative for the company
-        company.setLegalRepresentative(legalRepresentative);
+        // Fetch the managed company entity by ID
+        Company existingCompany = companyDAO.getCompanyByName(company.getName());
 
-        // Add the company to the set of companies for the legal representative
-        legalRepresentative.getCompanies().add(company);
+        // Merge the company entity to make it managed
+        companyDAO.mergeCompany(existingCompany);
+
+        // Set the legal representative for the merged company
+        existingCompany.setLegalRepresentative(legalRepresentative);
+
+        // Add the merged company to the set of companies for the legal representative
+        legalRepresentative.getCompanies().add(existingCompany);
 
         model.addAttribute("legal_representatives", legalrepresentativeDao.getLegalRepresentatives());
         return "legal_representatives";
     }
+
 
 
 

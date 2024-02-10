@@ -50,7 +50,18 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Override
     @Transactional
     public Company mergeCompany(Company company) {
-        return entityManager.merge(company);
+        Company existingCompany = getCompanyByName(company.getName());
+        if (existingCompany != null) {
+            // Merge the properties of the passed company to the existing one
+            existingCompany.setLegalRepresentative(company.getLegalRepresentative());
+
+            // Return the merged company
+            return entityManager.merge(existingCompany);
+        } else {
+            // If the company doesn't exist, persist the passed company
+            entityManager.persist(company);
+            return company;
+        }
     }
 }
 
