@@ -2,7 +2,10 @@ package gr.hua.dit.ds.group60.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class LegalRepresentative{
@@ -16,45 +19,33 @@ public class LegalRepresentative{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private String company;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="legal_representative_profile_id")
     private LegalRepresentativeProfile legalRepresentativeProfile;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name="application_legal_representative",
-            joinColumns = @JoinColumn(name="legal_representative_id"),
-            inverseJoinColumns = @JoinColumn(name="application_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames={"legal_representative_id", "application_id"})}
-    )
+    @OneToMany(mappedBy = "legalRepresentative", cascade = CascadeType.ALL)
     private List<Application> applications;
 
-    public List<Application> getApplications() {
-        return applications;
-    }
+    @OneToMany(mappedBy = "legalRepresentative", cascade = CascadeType.PERSIST)
+    private Set<Company> companies = new HashSet<>();
 
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
-    }
+    @Transient
+    private String companyName;
 
     public LegalRepresentative() {
     }
 
-    public LegalRepresentative(Integer legalRepresentativeId, User user, String company) {
+    public LegalRepresentative(Integer legalRepresentativeId, User user) {
         this.Id = legalRepresentativeId;
         this.user = user;
-        this.company = company;
     }
 
-    public Integer getLegalRepresentativeId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setLegalRepresentativeId(Integer legalRepresentativeId) {
-        this.Id = legalRepresentativeId;
+    public void setId(Integer id) {
+        Id = id;
     }
 
     public User getUser() {
@@ -65,14 +56,6 @@ public class LegalRepresentative{
         this.user = user;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
     public LegalRepresentativeProfile getLegalRepresentativeProfile() {
         return legalRepresentativeProfile;
     }
@@ -80,4 +63,47 @@ public class LegalRepresentative{
     public void setLegalRepresentativeProfile(LegalRepresentativeProfile legalRepresentativeProfile) {
         this.legalRepresentativeProfile = legalRepresentativeProfile;
     }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }
+
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public void addCompanyByName(String companyName) {
+        Company company = new Company();
+        company.setName(companyName);
+        company.setLegalRepresentative(this); // Set the LegalRepresentative instance
+        companies.add(company);
+    }
+
+    public void addCompany(Company company) {
+        companies.add(company);
+        company.setLegalRepresentative(this);
+    }
+
+    public void removeCompany(Company company) {
+        companies.remove(company);
+        company.setLegalRepresentative(null);
+    }
+
 }
+

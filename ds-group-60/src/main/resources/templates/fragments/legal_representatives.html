@@ -1,5 +1,5 @@
 <legal_representatives>
-    <div th:if="${ not#lists.isEmpty(legal_representatives)}">
+    <div th:if="${ not #lists.isEmpty(legal_representatives)}">
         <table class="table">
             <thead>
             <tr>
@@ -17,22 +17,28 @@
                 <td th:if="${legal_representative.user != null}" th:text="${legal_representative.user.firstname}"></td>
                 <td th:if="${legal_representative.user != null}" th:text="${legal_representative.user.lastname}"></td>
                 <td th:if="${legal_representative.user != null}" th:text="${legal_representative.user.email}"></td>
-                <td th:text="${legal_representative.company}"></td>
-                <td th:if="${legal_representative.legalRepresentativeId}">
-                    <a class="btn btn-info" th:href="@{/legal_representatives/{id}(id=${legal_representative.legalRepresentativeId})}">Edit</a>
-                    <button type="button" class="btn btn-danger" th:id="${legal_representative.legalRepresentativeId}" name="deleteLegalRepresentative" th:data-id="${legal_representative.legalRepresentativeId}">
+                <td>
+                    <ul>
+                        <li th:each="company : ${legal_representative.companies}" th:text="${company.name}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <a class="btn btn-info" th:href="@{/legal_representatives/{id}(id=${legal_representative.id})}">Edit</a>
+                    <button type="button" class="btn btn-danger" th:id="${legal_representative.id}" name="deleteLegalRepresentative" th:data-id="${legal_representative.id}">
                         <i class="remove user icon"></i> Delete
                     </button>
-                    <a class="btn btn-primary" th:href="@{/applications/legal_representative/new/{id}(id=${legal_representative.legalRepresentativeId})}">Add Application</a>
+                    <a class="btn btn-primary" th:href="@{/applications/legal_representative/new/{id}(id=${legal_representative.id})}">Add Application</a>
+                    <!-- Add Company Button -->
+                    <a class="btn btn-secondary" th:href="@{/legal_representatives/add_company/{id}(id=${legal_representative.id})}">Add Company</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="${ #lists.isEmpty(legal_representatives)}">
+    <div th:if="${#lists.isEmpty(legal_representatives)}">
         No Legal Representatives found!
     </div>
-    <a href="/legal_representatives/new" class="btn btn-primary" role="button">Create new Legal Representative</a>
+    <a th:if="${#lists.isEmpty(legal_representatives)}" href="/legal_representatives/new" class="btn btn-primary" role="button">Create new Legal Representative</a>
     <script type="text/javascript">
         $("[name='deleteLegalRepresentative']").click(function() {
             console.log("Delete button clicked");
@@ -44,7 +50,7 @@
                 type : 'DELETE',
                 success : function(result) {
                     console.log(result);
-                    $(location).attr("href", value="/legal_representatives");
+                    $(location).attr("href", "/legal_representatives");
                 },
                 error : function(result) {
                     console.log(result);
@@ -52,5 +58,7 @@
             });
         });
     </script>
-
+<!--    <div>-->
+<!--        <a th:if="${ not #lists.isEmpty(legal_representatives)}" href="/legal_representatives/new" class="btn btn-primary" role="button">Add Legal Representative</a>-->
+<!--    </div>-->
 </legal_representatives>

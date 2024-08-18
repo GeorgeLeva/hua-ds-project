@@ -1,5 +1,27 @@
 <home>
+    <!-- Other content... -->
 
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!-- Accessing current user details -->
+            <td th:text="${currentUser.username}"></td>
+            <td th:text="${currentUser.firstname}"></td>
+            <td th:text="${currentUser.lastname}"></td>
+            <td th:text="${currentUser.email}"></td>
+            <td th:if="${currentUser.id}"><a class="btn btn-info" th:href="@{/user/{id}(id=${currentUser.id})}">Edit</a>
+        </tr>
+        </tbody>
+    </table>
 
-
+    <!-- Other content... -->
 </home>

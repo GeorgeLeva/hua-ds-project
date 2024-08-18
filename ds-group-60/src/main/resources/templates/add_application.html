@@ -13,34 +13,34 @@
       <div class="form-group">
         <input type="hidden" id="id" class="form-control" th:field="*{id}">
       </div>
-      <div class="form-group">
-        <input type="hidden" id="username" class="form-control" th:field="*{legal_representative.user.username}">
+
+      <!-- Input field for the legal representative ID -->
+      <div class="form-group" th:if="${company != null}">
+        <label for="legalRepresentativeId">Legal Representative ID</label>
+        <input type="text" class="form-control" id="legalRepresentativeId" th:value="${company.legalRepresentative != null ? company.legalRepresentative.legalRepresentativeId : ''}" readonly="readonly"/>
       </div>
+      <!-- Dropdown menu for selecting the company -->
       <div class="form-group">
-        <input type="hidden" id="firstname" class="form-control" th:field="*{legal_representative.user.firstname}">
+        <label for="company">Select Company</label>
+        <select id="company" class="form-control" th:field="*{company.id}">
+          <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+        </select>
       </div>
-      <div class="form-group">
-        <input type="hidden" id="lastname" class="form-control" th:field="*{legal_representative.user.lastname}">
-      </div>
-      <div class="form-group">
-        <input type="hidden" id="email" class="form-control" th:field="*{legal_representative.user.email}">
-      </div>
-      <div class="form-group">
-        <label for="company">Company Name</label>
-        <input type="text" id="company" class="form-control" th:field="*{company}">
-      </div>
+
+
       <div class="form-group">
         <label for="purpose">Purpose</label>
-        <input type="text" id="purpose" class="form-control" th:field="*{purpose}">
+        <input type="text" id="purpose" class="form-control" th:field="*{company.purpose}">
       </div>
       <div class="form-group">
         <label for="operatingStatute">Operating Statute</label>
-        <input type="text" id="operatingStatute" class="form-control" th:field="*{operatingStatute}">
+        <input type="text" id="operatingStatute" class="form-control" th:field="*{company.operatingStatute}">
       </div>
       <div class="form-group">
         <label for="HQ">HQ Location</label>
-        <input type="text" id="HQ" class="form-control" th:field="*{HQ}">
+        <input type="text" id="HQ" class="form-control" th:field="*{company.HQ}">
       </div>
+
       <button type="submit" class="btn btn-primary">Submit</button>
       <div th:if="${#fields.hasErrors('*')}">
         <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Error</p>
